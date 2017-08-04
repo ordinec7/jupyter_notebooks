@@ -46,7 +46,9 @@ def integrate(F,t,y,tEnd,h,tol=1.0e-6, **opt):
     if opt and opt["step"]:
         initialStep = opt["step"]
 
-    progress = ProgressBar('Runge Kutta 5 Adaptive', t, tEnd)
+    pb = opt["pb"] if "pb" in opt else True
+    if pb:
+        progress = ProgressBar('Runge Kutta 5 Adaptive', t, tEnd)
 
     T = [t]
     Y = [y]
@@ -60,7 +62,8 @@ def integrate(F,t,y,tEnd,h,tol=1.0e-6, **opt):
             if initialStep == 0 or t >= step:
                 T.append(t)
                 Y.append(y)
-            progress.setValue(t)
+            if pb:
+                progress.setValue(t)
 
         # Compute next step size from Eq. (7.24)
         if e != 0.0:

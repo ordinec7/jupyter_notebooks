@@ -29,6 +29,7 @@ class EquationCalculator(object):
         self.step_size = arg['step_size'] if 'step_size' in arg else 1.0e-6
         self.tolerance = arg['tolerance'] if 'tolerance' in arg else 1.0e-10
         self.tEnd = arg['t_end'] if 't_end' in arg else 50.0
+        self.pb = arg['pb'] if 'pb' in arg else True
 
         if self.func is not None:
             self.generate_cache_name()
@@ -48,9 +49,9 @@ class EquationCalculator(object):
             return
 
         if self.method == 'rk5a':
-            self.t, self.v = rk5(self.func, self.tStart * self.time_scale, self.initial, self.tEnd * self.time_scale, self.step_size, self.tolerance, step=0.01)
+            self.t, self.v = rk5(self.func, self.tStart * self.time_scale, self.initial, self.tEnd * self.time_scale, self.step_size, self.tolerance, step=0.01, pb=self.pb)
         elif self.method == 'rk4':
-            self.t, self.v = rk4(self.func, self.tStart * self.time_scale, self.initial, self.tEnd * self.time_scale, self.step_size * 20000.0, step=0.01)
+            self.t, self.v = rk4(self.func, self.tStart * self.time_scale, self.initial, self.tEnd * self.time_scale, self.step_size * 20000.0, step=0.01, pb=self.pb)
         else:
             raise ValueError('Incorrect method name: %s. (Supported: rk5a, rk4).' % self.method)
 
